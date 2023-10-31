@@ -6,3 +6,8 @@ import 'bootstrap';
 // FROM BOOTSTRAP
 
 console.log('Hello World!');
+
+//
+// WE CAN'T USE ASYNC/AWAIT
+// WE MUST USE PROMISES
+//
