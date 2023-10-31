@@ -18,7 +18,7 @@
                     <p class="lead">
                         Начните читать RSS сегодня! Это легко, это красиво.
                     </p>
-                    <form class="rss-form text-body" action="">
+                    <form id="url-form" class="rss-form text-body" action="">
                         <div class="row">
                             <div class="col">
                                 <div class="form-floating">
@@ -34,11 +34,10 @@
                             </div>
                         </div>
                     </form>
-                    <p class="mt-2 mb-0 text-muted">
+                    <p class="mt-2 mb-0 text-secondary">
                         Пример: https://ru.hexlet.io/lessons.rss
                     </p>
-                    <p class="feedback m-0 position-absolute small text-danger">
-                    </p>
+                    <p id="url-error" class="feedback m-0 position-absolute small text-danger"></p>
                 </div>
             </div>
         </section>
