@@ -1,2 +1,15 @@
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/worldspawn-web/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/worldspawn-web/frontend-project-11/actions)
+# 🚀 Frontend-Project-11
+
+This project has been created using **webpack-cli**, you can now run
+
+```
+npm run build
+```
+
+or
+
+```
+yarn build
+```
+
+to bundle your application
