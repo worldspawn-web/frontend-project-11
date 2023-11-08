@@ -5,6 +5,7 @@ import { object, string, setLocale } from 'yup';
 import onChange from 'on-change';
 import i18next from 'i18next';
 import axios from 'axios';
+import { uniq, uniqueId, update } from 'lodash';
 
 import resources from './locales';
 import parse from './rss.js';
@@ -24,11 +25,60 @@ const addProxy = (url) => {
 
 const getData = (url) => axios.get(addProxy(url));
 
+const setIds = (posts, feedId) => {
+  posts.map((post) => {
+    post.id = uniqueId();
+    post.feedId = feedId;
+  });
+};
+
+const handleData = (data, watchedState) => {
+  const { feed, posts } = data;
+  feed.id = uniqueId();
+  watchedState.feeds.push(feed);
+  setIds(posts, feed.id);
+  watchedState.posts.push(...posts);
+};
+
+const updatePosts = (watchedState) => {
+  const promises = watchedState.feeds.map((feed) =>
+    getData(feed.link)
+      .then((response) => {
+        const { posts } = parse(response.data.contents);
+        const statePosts = watchedState.posts;
+        const currentIdPosts = statePosts.filter(
+          (post) => post.feedId === feed.id
+        );
+        const displayedPostLinks = currentIdPosts.map((post) => post.link);
+        const newPosts = posts.filter(
+          (post) => !displayedPostLinks.includes(post.link)
+        );
+        setIds(newPosts, feed.id);
+        watchedState.posts.unshift(...newPosts);
+      })
+      .catch((error) => {
+        console.error(
+          `Whoops, something is wrong with fetching data from feed ${feed.id}:`,
+          error
+        );
+      })
+  );
+  return Promise.all(promises).finally(
+    () => setTimeout(updatePosts, 5000, watchedState) // watches for new posts every 5000ms
+  );
+};
+
+const handleError = (error) => {
+  if (error.isParsingError) return 'notRSS';
+  if (axios.isAxiosError(error)) return 'networkError';
+  return error.message.key ?? 'unknown';
+};
+
 const app = () => {
   setLocale({
     mixed: {
       required: () => ({ key: 'requiredField' }),
-      notOneOf: () => ({ key: 'alreadyInList' }),
+      notOneOf: () => ({ key: 'alreadyInList' }), // can't add the same rss twice
     },
     string: {
       url: () => ({ key: 'notUrl' }),
@@ -37,17 +87,26 @@ const app = () => {
   });
 
   const state = {
-    formState: 'filling',
+    formStatus: 'filling', // to not allow send the GET request twice and switch between ui states
     error: null,
     posts: [],
     feeds: [],
     url: 'https://example.com/rss',
+    modalState: {
+      displayedPostId: null,
+      viewedPostIds: new Set(), // I think that Set will work the best here, since it removes any arr duplications
+    },
   };
 
+  // all the query elements store here
   const elements = {
     form: document.getElementById('url-form'),
-    errorEl: document.getElementById('url-error'),
     input: document.getElementById('url-input'),
+    errorEl: document.getElementById('url-error'),
+    submit: document.getElementById('url-submit-btn'),
+    feedback: document.querySelector('.feedback'),
+    posts: document.querySelector('.posts'),
+    feeds: document.querySelector('.feeds'),
   };
 
   const i18nextInstance = i18next.createInstance();
@@ -63,7 +122,7 @@ const app = () => {
         render(state, elements, i18nextInstance)
       );
       const createSchema = (validatedLinks) =>
-        yup.string().required().url().notOneOf(validatedLinks);
+        string().required().url().notOneOf(validatedLinks);
 
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -71,51 +130,25 @@ const app = () => {
         const schema = createSchema(addedLinks);
         const formData = new FormData(e.target);
         const input = formData.get('url');
-        schema.validate(input).then(() => {
-          watchedState.error = null;
-          watchedState.formState = 'sending';
-          return getData(input);
-        });
+        schema
+          .validate(input)
+          .then(() => {
+            watchedState.error = null;
+            watchedState.formStatus = 'sending';
+            return getData(input);
+          })
+          .then((response) => {
+            const data = parse(response.data.contents, input);
+            handleData(data, watchedState);
+            watchedState.formStatus = 'added';
+          })
+          .catch((error) => {
+            watchedState.formStatus = 'invalid';
+            watchedState.error = handleError(error);
+          });
       });
+      elements.postsL;
     });
-
-  let rssSchema = object().shape({
-    url: string().required().url(),
-  });
-
-  const validateRss = (url) => {
-    return new Promise((resolve, reject) => {
-      rssSchema
-        .validate({ url })
-        .then(() => {
-          resolve('valid');
-        })
-        .catch((error) => {
-          reject(error.errors);
-        });
-    });
-  };
-
-  elements.form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const url = formData.get('url');
-    state.url = url;
-
-    validateRss(state.url)
-      .then((result) => {
-        // result will be used later
-        console.log('RSS -> OK');
-        state.error = [];
-        watchedState.dispose(); // disable watched state after successful validation
-      })
-      .catch((errors) => {
-        const errorMessages = errors.map((error) => i18next.t(error));
-        console.log('RSS -> ERROR', errorMessages);
-        watchedState.error = errorMessages;
-      });
-  });
 };
 
 export default app;
