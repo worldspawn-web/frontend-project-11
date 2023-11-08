@@ -7,6 +7,7 @@ export default {
       networkError: 'Ошибка сети',
       unknown: 'Что-то пошло не так',
       empty: 'Не должно быть пустым',
+      requiredField: 'Это обязательное поле',
     },
     status: {
       sending: 'RSS загружается',

@@ -14,6 +14,16 @@ import parse from './rss.js';
 // WE MUST USE PROMISES
 //
 
+const addProxy = (url) => {
+  // proxy (All-Origins)
+  const url = new URL('/get', 'https://allorigins.hexlet.app');
+  url.searchParams.append('disableCache', 'true'); // cache needs to be disabled to receive new threads (see -> all-origins doc)
+  url.searchParams.append('url', url);
+  return url.toString();
+};
+
+const getData = (url) => axios.get(addProxy(url));
+
 const app = () => {
   setLocale({
     mixed: {
