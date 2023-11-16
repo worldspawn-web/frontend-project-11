@@ -27,8 +27,8 @@
     "webpack-dev-server": "^4.15.1"
   },
   "version": "1.0.0",
-  "description": "My webpack project",
-  "name": "my-webpack-project",
+  "description": "RSS aggregator",
+  "name": "@hexlet/code",
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
