@@ -1,7 +1,7 @@
 import './styles.scss';
 import 'bootstrap';
 
-import { object, string, setLocale } from 'yup';
+import * as yup from 'yup';
 import onChange from 'on-change';
 import i18next from 'i18next';
 import axios from 'axios';
@@ -64,8 +64,8 @@ const updatePosts = (watchedState) => {
         );
       })
   );
-  return Promise.all(promises).finally(
-    () => setTimeout(updatePosts, 5000, watchedState) // watches for new posts every 5000ms
+  return Promise.all(promises).finally(() =>
+    setTimeout(() => updatePosts(watchedState), 5000)
   );
 };
 
@@ -129,7 +129,7 @@ const app = () => {
         render(state, elements, i18nextInstance) // whole render is being watched for any changes in DOM
       );
       const createSchema = (validatedLinks) =>
-        string().required().url().notOneOf(validatedLinks); // +check for already added rss
+        yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
 
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault(); // doesn't work?
@@ -153,6 +153,8 @@ const app = () => {
             watchedState.formStatus = 'invalid';
             watchedState.error = handleError(error);
           });
+
+        return false;
       });
 
       elements.postsList.addEventListener('click', (e) => {
