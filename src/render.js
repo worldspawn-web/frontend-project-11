@@ -38,7 +38,7 @@ const createPosts = (state, i18next) => {
       'justify-content-between',
       'align-items-start',
       'border-0',
-      'border-end-0'
+      'border-end-0',
     );
     const anchorElement = document.createElement('a');
     anchorElement.setAttribute('href', post.link);
@@ -158,7 +158,7 @@ const renderPosts = (state, { postsList }, i18next) => {
 const renderDisplayedPost = (
   state,
   { modalHeader, modalBody, modalHref },
-  id
+  id,
 ) => {
   const posts = state.posts.filter((post) => post.id === id);
   const [{ description, link, title }] = posts;
