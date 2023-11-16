@@ -17,14 +17,15 @@ import parse from './rss.js';
 
 const addProxy = (url) => {
   // proxy (All-Origins)
-  const url = new URL('/get', 'https://allorigins.hexlet.app');
-  url.searchParams.append('disableCache', 'true'); // cache needs to be disabled to receive new threads (see -> all-origins doc)
-  url.searchParams.append('url', url);
-  return url.toString();
+  const newUrl = new URL('/get', 'https://allorigins.hexlet.app');
+  newUrl.searchParams.append('disableCache', 'true'); // cache needs to be disabled to receive new threads (see -> all-origins doc)
+  newUrl.searchParams.append('url', url);
+  return newUrl.toString();
 };
 
 const getData = (url) => axios.get(addProxy(url));
 
+// unique ids for every post
 const setIds = (posts, feedId) => {
   posts.map((post) => {
     post.id = uniqueId();
@@ -75,6 +76,7 @@ const handleError = (error) => {
 };
 
 const app = () => {
+  // defines yup + i18n work
   setLocale({
     mixed: {
       required: () => ({ key: 'requiredField' }),
@@ -98,7 +100,7 @@ const app = () => {
     },
   };
 
-  // all the query elements store here
+  // all the query elements are being store here
   const elements = {
     form: document.getElementById('url-form'),
     input: document.getElementById('url-input'),
@@ -107,25 +109,30 @@ const app = () => {
     feedback: document.querySelector('.feedback'),
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
+    // modal
+    modal: document.querySelector('.modal'),
+    modalHeader: document.querySelector('.modal-header'),
+    modalBody: document.querySelector('.modal-body'),
+    modalHref: document.querySelector('.full-article'),
   };
 
   const i18nextInstance = i18next.createInstance();
   i18nextInstance
     .init({
-      lng: 'ru',
-      debug: false,
+      lng: 'ru', // def
+      debug: false, // ?
       resources,
     })
     .then(() => {
       const watchedState = onChange(
         state,
-        render(state, elements, i18nextInstance)
+        render(state, elements, i18nextInstance) // whole render is being watched for any changes in DOM
       );
       const createSchema = (validatedLinks) =>
-        string().required().url().notOneOf(validatedLinks);
+        string().required().url().notOneOf(validatedLinks); // +check for already added rss
 
       elements.form.addEventListener('submit', (e) => {
-        e.preventDefault();
+        e.preventDefault(); // doesn't work?
         const addedLinks = watchedState.feeds.map((feed) => feed.link);
         const schema = createSchema(addedLinks);
         const formData = new FormData(e.target);
@@ -147,7 +154,15 @@ const app = () => {
             watchedState.error = handleError(error);
           });
       });
-      elements.postsL;
+
+      elements.postsList.addEventListener('click', (e) => {
+        const postId = e.target.dataset.id;
+        if (postId) {
+          watchedState.uiState.displayedPostId = postId;
+          watchedState.uiState.viewedPostIds.add(postId);
+        }
+      });
+      updatePosts(watchedState);
     });
 };
 
