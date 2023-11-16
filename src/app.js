@@ -8,7 +8,9 @@ import axios from 'axios';
 import { uniq, uniqueId, update } from 'lodash';
 
 import resources from './locales';
-import parse from './rss.js';
+import parse from './rss';
+
+import render from './render';
 
 //
 // WE CAN'T USE ASYNC/AWAIT
@@ -27,7 +29,7 @@ const getData = (url) => axios.get(addProxy(url));
 
 // unique ids for every post
 const setIds = (posts, feedId) => {
-  posts.map((post) => {
+  posts.forEach((post) => {
     post.id = uniqueId();
     post.feedId = feedId;
   });
@@ -48,11 +50,11 @@ const updatePosts = (watchedState) => {
         const { posts } = parse(response.data.contents);
         const statePosts = watchedState.posts;
         const currentIdPosts = statePosts.filter(
-          (post) => post.feedId === feed.id
+          (post) => post.feedId === feed.id,
         );
         const displayedPostLinks = currentIdPosts.map((post) => post.link);
         const newPosts = posts.filter(
-          (post) => !displayedPostLinks.includes(post.link)
+          (post) => !displayedPostLinks.includes(post.link),
         );
         setIds(newPosts, feed.id);
         watchedState.posts.unshift(...newPosts);
@@ -60,12 +62,12 @@ const updatePosts = (watchedState) => {
       .catch((error) => {
         console.error(
           `Whoops, something is wrong with fetching data from feed ${feed.id}:`,
-          error
+          error,
         );
-      })
+      }),
   );
   return Promise.all(promises).finally(() =>
-    setTimeout(() => updatePosts(watchedState), 5000)
+    setTimeout(() => updatePosts(watchedState), 5000),
   );
 };
 
@@ -76,8 +78,9 @@ const handleError = (error) => {
 };
 
 const app = () => {
+  console.log('app was call');
   // defines yup + i18n work
-  setLocale({
+  yup.setLocale({
     mixed: {
       required: () => ({ key: 'requiredField' }),
       notOneOf: () => ({ key: 'alreadyInList' }), // can't add the same rss twice
@@ -96,7 +99,8 @@ const app = () => {
     url: 'https://example.com/rss',
     modalState: {
       displayedPostId: null,
-      viewedPostIds: new Set(), // I think that Set will work the best here, since it removes any arr duplications
+      // I think that Set will work the best here, since it removes any arr duplications
+      viewedPostIds: new Set(),
     },
   };
 
@@ -120,13 +124,14 @@ const app = () => {
   i18nextInstance
     .init({
       lng: 'ru', // def
-      debug: false, // ?
+      debug: true, // ?
       resources,
     })
     .then(() => {
       const watchedState = onChange(
         state,
-        render(state, elements, i18nextInstance) // whole render is being watched for any changes in DOM
+        // whole render is being watched for any changes in DOM
+        render(state, elements, i18nextInstance),
       );
       const createSchema = (validatedLinks) =>
         yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
