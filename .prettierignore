@@ -1,0 +1,8 @@
+.eslintignore
+
+.gitignore
+.gitattributes
+
+.prettierignore
+
+Makefile
