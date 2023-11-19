@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import onChange from 'on-change';
 import i18next from 'i18next';
 import axios from 'axios';
-import { uniq, uniqueId, update } from 'lodash';
+import { uniqueId } from 'lodash';
 
 import resources from './locales';
 import parse from './rss';
@@ -78,7 +78,7 @@ const handleError = (error) => {
 };
 
 const app = () => {
-  console.log('app was call');
+  console.log('App has been called.');
   // defines yup + i18n work
   yup.setLocale({
     mixed: {
@@ -124,7 +124,7 @@ const app = () => {
   i18nextInstance
     .init({
       lng: 'ru', // def
-      debug: true, // ?
+      debug: true,
       resources,
     })
     .then(() => {
@@ -137,7 +137,7 @@ const app = () => {
         yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
 
       elements.form.addEventListener('submit', (e) => {
-        e.preventDefault(); // doesn't work?
+        e.preventDefault();
         const addedLinks = watchedState.feeds.map((feed) => feed.link);
         const schema = createSchema(addedLinks);
         const formData = new FormData(e.target);
@@ -162,7 +162,7 @@ const app = () => {
         return false;
       });
 
-      elements.postsList.addEventListener('click', (e) => {
+      elements.posts.addEventListener('click', (e) => {
         const postId = e.target.dataset.id;
         if (postId) {
           watchedState.uiState.displayedPostId = postId;
