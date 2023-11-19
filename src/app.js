@@ -96,9 +96,9 @@ const app = () => {
     error: null,
     posts: [],
     feeds: [],
-    url: 'https://example.com/rss',
+    // url: 'https://example.com/rss',
     modalState: {
-      displayedPostId: null,
+      displayedPost: null,
       // I think that Set will work the best here, since it removes any arr duplications
       viewedPostIds: new Set(),
     },
@@ -165,7 +165,7 @@ const app = () => {
       elements.posts.addEventListener('click', (e) => {
         const postId = e.target.dataset.id;
         if (postId) {
-          watchedState.modalState.displayedPostId = postId;
+          watchedState.modalState.displayedPost = postId;
           watchedState.modalState.viewedPostIds.add(postId);
         }
       });
