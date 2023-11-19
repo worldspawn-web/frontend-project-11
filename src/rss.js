@@ -14,9 +14,9 @@ const parsePost = (post) => {
 const parse = (rss, url) => {
   const parser = new DOMParser();
   const data = parser.parseFromString(rss, 'text/xml');
-  const parseError = data.querySelector('parseerror');
-  if (parseError) {
-    const error = new Error(parseError.textContent);
+  const parserError = data.querySelector('parsererror');
+  if (parserError) {
+    const error = new Error(parserError.textContent);
     error.isParsingError = true;
     throw error;
   }

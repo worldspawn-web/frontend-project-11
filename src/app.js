@@ -165,8 +165,8 @@ const app = () => {
       elements.posts.addEventListener('click', (e) => {
         const postId = e.target.dataset.id;
         if (postId) {
-          watchedState.uiState.displayedPostId = postId;
-          watchedState.uiState.viewedPostIds.add(postId);
+          watchedState.modalState.displayedPostId = postId;
+          watchedState.modalState.viewedPostIds.add(postId);
         }
       });
       updatePosts(watchedState);

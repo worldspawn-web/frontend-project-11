@@ -47,7 +47,7 @@ const createPosts = (state, i18next) => {
     anchorElement.setAttribute('rel', 'noopener noreferrer');
 
     // mark as read functionality
-    if (state.uiState.viewedPostIds.has(post.id)) {
+    if (state.modalState.viewedPostIds.has(post.id)) {
       anchorElement.classList.add('fw-normal');
     } else {
       anchorElement.classList.add('fw-bold');
@@ -149,10 +149,10 @@ const renderFeeds = (state, { feedsList }, i18next) => {
   feedsList.append(feeds);
 };
 
-const renderPosts = (state, { postsList }, i18next) => {
-  postsList.innerHTML = '';
-  const posts = createList('posts', state, i18next);
-  postsList.append(posts);
+const renderPosts = (state, { posts }, i18next) => {
+  posts.innerHTML = '';
+  const renderedPosts = createList('posts', state, i18next);
+  renderedPosts.append(posts);
 };
 
 const renderDisplayedPost = (
@@ -173,8 +173,9 @@ const render = (state, elements, i18next) => (path, value) => {
     error: () => renderError(state, elements, i18next, value),
     feeds: () => renderFeeds(state, elements, i18next),
     posts: () => renderPosts(state, elements, i18next),
-    'uiState.viewedPostIds': () => renderPosts(state, elements, i18next),
-    'uiState.displayedPost': () => renderDisplayedPost(state, elements, value),
+    'modalState.viewedPostIds': () => renderPosts(state, elements, i18next),
+    'modalState.displayedPost': () =>
+      renderDisplayedPost(state, elements, value),
   };
 
   const renderFunction = renderFunctions[path];
