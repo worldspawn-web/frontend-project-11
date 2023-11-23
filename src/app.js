@@ -25,7 +25,12 @@ const addProxy = (url) => {
   return newUrl.toString();
 };
 
-const getData = (url) => axios.get(addProxy(url));
+const getData = (url) =>
+  axios.get(addProxy(url), {
+    headers: {
+      'Content-Type': 'application/xml',
+    },
+  });
 
 // unique ids for every post
 const setIds = (posts, feedId) => {
@@ -142,6 +147,10 @@ const app = () => {
         const schema = createSchema(addedLinks);
         const formData = new FormData(e.target);
         const input = formData.get('url');
+
+        // eslint-disable-next-line no-debugger
+        // debugger;
+
         schema
           .validate(input)
           .then(() => {
@@ -159,7 +168,7 @@ const app = () => {
             watchedState.error = handleError(error);
           });
 
-        return false;
+        // return false;
       });
 
       elements.posts.addEventListener('click', (e) => {
