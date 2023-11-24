@@ -168,18 +168,43 @@ const renderDisplayedPost = (
 };
 
 const render = (state, elements, i18next) => (path, value) => {
-  const renderFunctions = {
-    formState: () => renderState(elements, i18next, value),
-    error: () => renderError(state, elements, i18next, value),
-    feeds: () => renderFeeds(state, elements, i18next),
-    posts: () => renderPosts(state, elements, i18next),
-    'modalState.viewedPostIds': () => renderPosts(state, elements, i18next),
-    'modalState.displayedPost': () =>
-      renderDisplayedPost(state, elements, value),
-  };
+  switch (path) {
+    case 'formState':
+      renderState(elements, i18next, value);
+      break;
+    case 'error':
+      renderError(state, elements, i18next, value);
+      break;
+    case 'feeds':
+      renderFeeds(state, elements, i18next);
+      break;
+    case 'posts':
+    case 'uiState.viewedPostIds':
+      renderPosts(state, elements, i18next);
+      break;
+    case 'uiState.displayedPost':
+      renderDisplayedPost(state, elements, value);
+      break;
+    default:
+      break;
+  }
 
-  const renderFunction = renderFunctions[path];
-  if (renderFunction) renderFunction();
+  //
+  // WHY THIS SOLUTION DOESN'T WORK PROPERLY FOR MODALS?
+  // MODALS HEADER, TEXT AND HREF APPEARS TO BE EMPTY THIS WAY
+  //
+  // const renderFunctions = {
+  //   formState: () => renderState(elements, i18next, value),
+  //   error: () => renderError(state, elements, i18next, value),
+  //   feeds: () => renderFeeds(state, elements, i18next),
+  //   posts: () => renderPosts(state, elements, i18next),
+  //   'modalState.viewedPostIds': () => renderPosts(state, elements, i18next),
+  //   'modalState.displayedPost': () =>
+  //     renderDisplayedPost(state, elements, value),
+  // };
+
+  // const renderFunction = renderFunctions[path];
+  // if (renderFunction) renderFunction();
 };
 
 export default render;
