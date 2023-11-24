@@ -97,27 +97,24 @@ const app = () => {
   });
 
   const state = {
-    formStatus: 'filling', // to not allow send the GET request twice and switch between ui states
+    formState: 'filling',
     error: null,
     posts: [],
     feeds: [],
-    // url: 'https://example.com/rss',
-    modalState: {
+    uiState: {
       displayedPost: null,
-      // I think that Set will work the best here, since it removes any arr duplications
       viewedPostIds: new Set(),
     },
   };
 
-  // all the query elements are being store here
+  // improved selectors
   const elements = {
-    form: document.getElementById('url-form'),
-    input: document.getElementById('url-input'),
-    errorEl: document.getElementById('url-error'),
-    submit: document.getElementById('url-submit-btn'),
+    form: document.querySelector('.rss-form'),
+    input: document.querySelector('#url-input'),
+    submit: document.querySelector('[type="submit"]'), // is this better?
     feedback: document.querySelector('.feedback'),
-    posts: document.querySelector('.posts'),
-    feeds: document.querySelector('.feeds'),
+    postsList: document.querySelector('.posts'),
+    feedsList: document.querySelector('.feeds'),
     // modal
     modal: document.querySelector('.modal'),
     modalHeader: document.querySelector('.modal-header'),
@@ -155,27 +152,25 @@ const app = () => {
           .validate(input)
           .then(() => {
             watchedState.error = null;
-            watchedState.formStatus = 'sending';
+            watchedState.formState = 'sending';
             return getData(input);
           })
           .then((response) => {
             const data = parse(response.data.contents, input);
             handleData(data, watchedState);
-            watchedState.formStatus = 'added';
+            watchedState.formState = 'added';
           })
           .catch((error) => {
-            watchedState.formStatus = 'invalid';
+            watchedState.formState = 'invalid';
             watchedState.error = handleError(error);
           });
-
-        // return false;
       });
 
-      elements.posts.addEventListener('click', (e) => {
+      elements.postsList.addEventListener('click', (e) => {
         const postId = e.target.dataset.id;
         if (postId) {
-          watchedState.modalState.displayedPost = postId;
-          watchedState.modalState.viewedPostIds.add(postId);
+          watchedState.uiState.displayedPost = postId;
+          watchedState.uiState.viewedPostIds.add(postId);
         }
       });
       updatePosts(watchedState);
