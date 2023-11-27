@@ -136,7 +136,7 @@ const app = () => {
         render(state, elements, i18nextInstance),
       );
       const createSchema = (validatedLinks) => {
-        yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
+        return yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
       };
 
       elements.form.addEventListener('submit', (e) => {
