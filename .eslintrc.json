@@ -1,6 +1,6 @@
 {
   "parser": "@babel/eslint-parser",
-  "extends": ["airbnb"],
+  "extends": [],
   "rules": {
     "no-unused-vars": "warn",
     "implicit-arrow-linebreak": "off",
