@@ -133,7 +133,7 @@ const app = () => {
       );
       const createSchema = (validatedLinks) => {
         yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
-      } 
+      };
 
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
