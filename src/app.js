@@ -25,12 +25,11 @@ const addProxy = (url) => {
   return newUrl.toString();
 };
 
-const getData = (url) =>
-  axios.get(addProxy(url), {
-    headers: {
-      'Content-Type': 'application/xml',
-    },
-  });
+const getData = (url) => axios.get(addProxy(url), {
+  headers: {
+    'Content-Type': 'application/xml',
+  },
+});
 
 // unique ids for every post
 const setIds = (posts, feedId) => {
@@ -49,31 +48,28 @@ const handleData = (data, watchedState) => {
 };
 
 const updatePosts = (watchedState) => {
-  const promises = watchedState.feeds.map((feed) =>
-    getData(feed.link)
-      .then((response) => {
-        const { posts } = parse(response.data.contents);
-        const statePosts = watchedState.posts;
-        const currentIdPosts = statePosts.filter(
-          (post) => post.feedId === feed.id,
-        );
-        const displayedPostLinks = currentIdPosts.map((post) => post.link);
-        const newPosts = posts.filter(
-          (post) => !displayedPostLinks.includes(post.link),
-        );
-        setIds(newPosts, feed.id);
-        watchedState.posts.unshift(...newPosts);
-      })
-      .catch((error) => {
-        console.error(
-          `Whoops, something is wrong with fetching data from feed ${feed.id}:`,
-          error,
-        );
-      }),
+  const promises = watchedState.feeds.map((feed) => getData(feed.link)
+    .then((response) => {
+      const { posts } = parse(response.data.contents);
+      const statePosts = watchedState.posts;
+      const currentIdPosts = statePosts.filter(
+        (post) => post.feedId === feed.id,
+      );
+      const displayedPostLinks = currentIdPosts.map((post) => post.link);
+      const newPosts = posts.filter(
+        (post) => !displayedPostLinks.includes(post.link),
+      );
+      setIds(newPosts, feed.id);
+      watchedState.posts.unshift(...newPosts);
+    })
+    .catch((error) => {
+      console.error(
+        `Whoops, something is wrong with fetching data from feed ${feed.id}:`,
+        error,
+      );
+    }),
   );
-  return Promise.all(promises).finally(() =>
-    setTimeout(() => updatePosts(watchedState), 5000),
-  );
+  return Promise.all(promises).finally(() => setTimeout(() => updatePosts(watchedState), 5000));
 };
 
 const handleError = (error) => {
@@ -135,8 +131,7 @@ const app = () => {
         // whole render is being watched for any changes in DOM
         render(state, elements, i18nextInstance),
       );
-      const createSchema = (validatedLinks) =>
-        yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
+      const createSchema = (validatedLinks) => yup.string().required().url().notOneOf(validatedLinks); // +check for already added rss
 
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
