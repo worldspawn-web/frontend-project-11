@@ -6,7 +6,3 @@
 .prettierignore
 
 Makefile
-
-# temp
-src/app.js
-src/render.js
