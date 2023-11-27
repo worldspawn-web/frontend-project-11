@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
+    "@babel/eslint-parser": "^7.23.3",
     "@babel/preset-env": "^7.20.2",
     "@webpack-cli/generators": "^3.0.1",
     "autoprefixer": "^10.4.14",
