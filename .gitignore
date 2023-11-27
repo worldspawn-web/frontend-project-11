@@ -2,3 +2,4 @@
 /.github/
 .babelrc
 .eslintrc.yml
+dist
