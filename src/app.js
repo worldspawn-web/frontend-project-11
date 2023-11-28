@@ -73,13 +73,12 @@ const updatePosts = (watchedState) => {
           `Whoops, something is wrong with fetching data from feed ${feed.id}:`,
           error,
         );
-      }),
-  );
+      }));
   // fuck the airbnb, embrace prettier
   return Promise.all(promises).finally(() =>
   // eslint-disable-next-line implicit-arrow-linebreak
     setTimeout(() => updatePosts(watchedState), 5000),
-  // eslint-disable-next-line function-paren-newline 
+  // eslint-disable-next-line function-paren-newline
   );
 };
 
