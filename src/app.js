@@ -28,7 +28,7 @@ const addProxy = (url) => {
 const getData = (url) =>
 // fuck the airbnb, embrace prettier
 // eslint-disable-next-line implicit-arrow-linebreak
-axios.get(addProxy(url), {
+  axios.get(addProxy(url), {
     headers: {
       'Content-Type': 'application/xml',
     },
@@ -78,7 +78,7 @@ const updatePosts = (watchedState) => {
   // fuck the airbnb, embrace prettier
   return Promise.all(promises).finally(() =>
   // eslint-disable-next-line implicit-arrow-linebreak
-  setTimeout(() => updatePosts(watchedState), 5000),
+    setTimeout(() => updatePosts(watchedState), 5000),
   // eslint-disable-next-line function-paren-newline 
   );
 };
