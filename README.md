@@ -3,7 +3,7 @@
 [![hexlet-check](https://github.com/worldspawn-web/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/worldspawn-web/frontend-project-11/actions/workflows/hexlet-check.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b60ad971184db649807f/maintainability)](https://codeclimate.com/github/worldspawn-web/frontend-project-11/maintainability)
 
-![image.png](img/image.png)
+![image.png](public/image.png)
 
 ## What is this project about?
 
