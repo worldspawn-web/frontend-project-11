@@ -51,9 +51,8 @@ const handleData = (data, watchedState) => {
 };
 
 const updatePosts = (watchedState) => {
-
   // fuck the airbnb, embrace prettier
-// eslint-disable-next-line implicit-arrow-linebreak
+  // eslint-disable-next-line implicit-arrow-linebreak
   const promises = watchedState.feeds.map((feed) =>
     getData(feed.link)
       .then((response) => {
