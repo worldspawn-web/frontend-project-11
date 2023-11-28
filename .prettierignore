@@ -6,3 +6,5 @@
 .prettierignore
 
 Makefile
+
+src/*.js
