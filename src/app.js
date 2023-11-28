@@ -135,8 +135,9 @@ const app = () => {
         // whole render is being watched for any changes in DOM
         render(state, elements, i18nextInstance),
       );
+
+      // eslint-disable-next-line arrow-body-style
       const createSchema = (validatedLinks) => yup.string().required().url().notOneOf(validatedLinks); 
-      // +check for already added rss
       
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
