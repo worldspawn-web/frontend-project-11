@@ -107,6 +107,8 @@ const renderSending = ({ submit, input, feedback }, i18next) => {
   feedback.textContent = i18next.t('status.sending');
 };
 
+// fuck the airbnb, embrace prettier
+// eslint-disable-next-line object-curly-newline
 const renderAdded = ({ submit, input, feedback, form }, i18next) => {
   submit.disabled = false;
   input.classList.remove('is-invalid');

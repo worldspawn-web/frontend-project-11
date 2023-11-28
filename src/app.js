@@ -25,6 +25,8 @@ const addProxy = (url) => {
   return newUrl.toString();
 };
 
+// fuck the airbnb, embrace prettier
+// eslint-disable-next-line implicit-arrow-linebreak
 const getData = (url) =>
   axios.get(addProxy(url), {
     headers: {
@@ -49,6 +51,9 @@ const handleData = (data, watchedState) => {
 };
 
 const updatePosts = (watchedState) => {
+
+  // fuck the airbnb, embrace prettier
+// eslint-disable-next-line implicit-arrow-linebreak
   const promises = watchedState.feeds.map((feed) =>
     getData(feed.link)
       .then((response) => {
@@ -71,6 +76,9 @@ const updatePosts = (watchedState) => {
         );
       }),
   );
+  // fuck the airbnb, embrace prettier
+  // eslint-disable-next-line implicit-arrow-linebreak
+  // eslint-disable-next-line function-paren-newline 
   return Promise.all(promises).finally(() =>
     setTimeout(() => updatePosts(watchedState), 5000),
   );
@@ -136,7 +144,9 @@ const app = () => {
         render(state, elements, i18nextInstance),
       );
 
+      // fuck the airbnb, embrace prettier
       // eslint-disable-next-line arrow-body-style
+      // eslint-disable-next-line max-len
       const createSchema = (validatedLinks) => yup.string().required().url().notOneOf(validatedLinks);
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
