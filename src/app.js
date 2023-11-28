@@ -137,8 +137,7 @@ const app = () => {
       );
 
       // eslint-disable-next-line arrow-body-style
-      const createSchema = (validatedLinks) => yup.string().required().url().notOneOf(validatedLinks); 
-      
+      const createSchema = (validatedLinks) => yup.string().required().url().notOneOf(validatedLinks);
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
         const addedLinks = watchedState.feeds.map((feed) => feed.link);
