@@ -7,4 +7,8 @@
 
 Makefile
 
+# turned off after developnebt since hexlet tests
+# are disabling custom eslint rules
+# and I can't lovely stare at my prettier settings =(
+# PRESS F
 src/*.js
