@@ -25,10 +25,10 @@ const addProxy = (url) => {
   return newUrl.toString();
 };
 
+const getData = (url) =>
 // fuck the airbnb, embrace prettier
 // eslint-disable-next-line implicit-arrow-linebreak
-const getData = (url) =>
-  axios.get(addProxy(url), {
+axios.get(addProxy(url), {
     headers: {
       'Content-Type': 'application/xml',
     },
@@ -51,9 +51,9 @@ const handleData = (data, watchedState) => {
 };
 
 const updatePosts = (watchedState) => {
+  const promises = watchedState.feeds.map((feed) =>
   // fuck the airbnb, embrace prettier
   // eslint-disable-next-line implicit-arrow-linebreak
-  const promises = watchedState.feeds.map((feed) =>
     getData(feed.link)
       .then((response) => {
         const { posts } = parse(response.data.contents);
@@ -76,10 +76,10 @@ const updatePosts = (watchedState) => {
       }),
   );
   // fuck the airbnb, embrace prettier
-  // eslint-disable-next-line implicit-arrow-linebreak
-  // eslint-disable-next-line function-paren-newline 
   return Promise.all(promises).finally(() =>
-    setTimeout(() => updatePosts(watchedState), 5000),
+  // eslint-disable-next-line implicit-arrow-linebreak
+  setTimeout(() => updatePosts(watchedState), 5000),
+  // eslint-disable-next-line function-paren-newline 
   );
 };
 
