@@ -107,7 +107,6 @@ const renderSending = ({ submit, input, feedback }, i18next) => {
   feedback.textContent = i18next.t('status.sending');
 };
 
-// fuck the airbnb, embrace prettier
 // eslint-disable-next-line object-curly-newline
 const renderAdded = ({ submit, input, feedback, form }, i18next) => {
   submit.disabled = false;
@@ -171,7 +170,7 @@ const renderDisplayedPost = (
 
 const render = (state, elements, i18next) => (path, value) => {
   switch (path) {
-    case 'formState':
+    case 'processState':
       renderState(elements, i18next, value);
       break;
     case 'error':
@@ -190,23 +189,6 @@ const render = (state, elements, i18next) => (path, value) => {
     default:
       break;
   }
-
-  //
-  // WHY THIS SOLUTION DOESN'T WORK PROPERLY FOR MODALS?
-  // MODALS HEADER, TEXT AND HREF APPEARS TO BE EMPTY THIS WAY
-  //
-  // const renderFunctions = {
-  //   formState: () => renderState(elements, i18next, value),
-  //   error: () => renderError(state, elements, i18next, value),
-  //   feeds: () => renderFeeds(state, elements, i18next),
-  //   posts: () => renderPosts(state, elements, i18next),
-  //   'modalState.viewedPostIds': () => renderPosts(state, elements, i18next),
-  //   'modalState.displayedPost': () =>
-  //     renderDisplayedPost(state, elements, value),
-  // };
-
-  // const renderFunction = renderFunctions[path];
-  // if (renderFunction) renderFunction();
 };
 
 export default render;
