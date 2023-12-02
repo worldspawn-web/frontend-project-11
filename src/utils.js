@@ -37,4 +37,6 @@ const handleError = (error) => {
   return error.message.key ?? 'unknown';
 };
 
-export { addProxy, getData, setIds, handleData, handleError };
+export {
+  addProxy, getData, setIds, handleData, handleError
+};
