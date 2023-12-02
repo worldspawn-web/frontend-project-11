@@ -11,7 +11,7 @@ import parse from './rss';
 import render from './render';
 
 import {
-  getData, setIds, handleData, handleError
+  getData, setIds, handleData, handleError,
 } from './utils.js';
 
 const updatePosts = (watchedState) => {

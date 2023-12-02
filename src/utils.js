@@ -38,5 +38,5 @@ const handleError = (error) => {
 };
 
 export {
-  addProxy, getData, setIds, handleData, handleError
+  addProxy, getData, setIds, handleData, handleError,
 };
