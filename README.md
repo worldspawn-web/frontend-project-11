@@ -1,6 +1,6 @@
 # RSS Aggregator
 
-[Check it out on Vercel.](frontend-project-11-nu-eight.vercel.app)
+[Check it out on Vercel](frontend-project-11-nu-eight.vercel.app)
 
 [![hexlet-check](https://github.com/worldspawn-web/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/worldspawn-web/frontend-project-11/actions/workflows/hexlet-check.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/81c00863fa552b47e45e/maintainability)](https://codeclimate.com/github/worldspawn-web/frontend-project-11/maintainability)
