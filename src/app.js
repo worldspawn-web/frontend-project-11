@@ -7,15 +7,13 @@ import i18next from 'i18next';
 
 import resources from './locales';
 import parse from './rss';
-
-import render from './render';
+import render from './render.js';
 
 import {
   handleData, handleError,
 } from './render.js';
 import axios from 'axios';
 import { uniqueId } from 'lodash';
-
 
 const addProxy = (url) => {
   const newUrl = new URL('/get', 'https://allorigins.hexlet.app');

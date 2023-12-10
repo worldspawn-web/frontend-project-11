@@ -66,7 +66,7 @@ const createPosts = (state, i18next) => {
 
     // mark as read functionality
     if (state.uiState.viewedPostIds.has(post.id)) {
-      anchorElement.classList.add('fw-normal');
+      anchorElement.classList.add('link-secondary');
     } else {
       anchorElement.classList.add('fw-bold');
     }
