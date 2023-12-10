@@ -4,16 +4,14 @@ import 'bootstrap';
 import * as yup from 'yup';
 import onChange from 'on-change';
 import i18next from 'i18next';
+import axios from 'axios';
 
 import resources from './locales';
 import parse from './rss';
-import render from './render.js';
 
 import {
-  handleData, handleError,
+  handleData, handleError, render, setIds
 } from './render.js';
-import axios from 'axios';
-import { uniqueId } from 'lodash';
 
 const addProxy = (url) => {
   const newUrl = new URL('/get', 'https://allorigins.hexlet.app');
@@ -29,13 +27,6 @@ const getData = (url) =>
       'Content-Type': 'application/xml',
     },
   });
-
-const setIds = (posts, feedId) => {
-  posts.forEach((post) => {
-    post.id = uniqueId();
-    post.feedId = feedId;
-  });
-};
 
 const updatePosts = (watchedState) => {
   const updateInterval = 5000;
@@ -158,4 +149,3 @@ const app = () => {
 };
 
 export default app;
-export { setIds };

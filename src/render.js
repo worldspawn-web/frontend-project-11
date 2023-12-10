@@ -1,6 +1,5 @@
 import { uniqueId } from 'lodash';
 import axios from 'axios';
-import { setIds } from './app.js';
 
 const handleData = (data, watchedState) => {
   const { feed, posts } = data;
@@ -14,6 +13,13 @@ const handleError = (error) => {
   if (error.isParsingError) return 'notRSS';
   if (axios.isAxiosError(error)) return 'networkError';
   return error.message.key ?? 'unknown';
+};
+
+const setIds = (posts, feedId) => {
+  posts.forEach((post) => {
+    post.id = uniqueId();
+    post.feedId = feedId;
+  });
 };
 
 const createFeeds = (state) => {
@@ -209,5 +215,4 @@ const render = (state, elements, i18next) => (path, value) => {
   }
 };
 
-export default render;
-export { handleData, handleError };
+export { handleData, handleError, setIds, render };
