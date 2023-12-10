@@ -216,5 +216,5 @@ const render = (state, elements, i18next) => (path, value) => {
 };
 
 export {
-  handleData, handleError, setIds, render
+  handleData, handleError, setIds, render,
 };
