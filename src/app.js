@@ -10,7 +10,7 @@ import resources from './locales';
 import parse from './rss';
 
 import {
-  handleData, handleError, render, setIds
+  handleData, handleError, render, setIds,
 } from './render.js';
 
 const addProxy = (url) => {

@@ -1,6 +1,13 @@
 import { uniqueId } from 'lodash';
 import axios from 'axios';
 
+const setIds = (posts, feedId) => {
+  posts.forEach((post) => {
+    post.id = uniqueId();
+    post.feedId = feedId;
+  });
+};
+
 const handleData = (data, watchedState) => {
   const { feed, posts } = data;
   feed.id = uniqueId();
@@ -13,13 +20,6 @@ const handleError = (error) => {
   if (error.isParsingError) return 'notRSS';
   if (axios.isAxiosError(error)) return 'networkError';
   return error.message.key ?? 'unknown';
-};
-
-const setIds = (posts, feedId) => {
-  posts.forEach((post) => {
-    post.id = uniqueId();
-    post.feedId = feedId;
-  });
 };
 
 const createFeeds = (state) => {
