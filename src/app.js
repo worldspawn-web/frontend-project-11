@@ -11,8 +11,33 @@ import parse from './rss';
 import render from './render';
 
 import {
-  getData, setIds, handleData, handleError,
-} from './utils.js';
+  handleData, handleError,
+} from './render.js';
+import axios from 'axios';
+import { uniqueId } from 'lodash';
+
+
+const addProxy = (url) => {
+  const newUrl = new URL('/get', 'https://allorigins.hexlet.app');
+  newUrl.searchParams.append('disableCache', 'true'); // cache needs to be disabled to receive new threads (see -> all-origins doc)
+  newUrl.searchParams.append('url', url);
+  return newUrl.toString();
+};
+
+const getData = (url) =>
+// eslint-disable-next-line implicit-arrow-linebreak
+  axios.get(addProxy(url), {
+    headers: {
+      'Content-Type': 'application/xml',
+    },
+  });
+
+const setIds = (posts, feedId) => {
+  posts.forEach((post) => {
+    post.id = uniqueId();
+    post.feedId = feedId;
+  });
+};
 
 const updatePosts = (watchedState) => {
   const updateInterval = 5000;
@@ -135,3 +160,4 @@ const app = () => {
 };
 
 export default app;
+export { setIds };
